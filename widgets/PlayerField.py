@@ -15,6 +15,8 @@ class PlayerField(QWidget):
 		for player in playerList:
 			pfLayout.addWidget(PlayerWidget(player))
 
+		pfLayout.addStretch(20)
+
 		self.setLayout(pfLayout)
 
 		print "Player field initialized"

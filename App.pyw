@@ -5,6 +5,7 @@ from random import randint
 
 from widgets.GameField import GameField
 from widgets.PlayerField import PlayerField
+from widgets.SelectField import SelectField
 
 if __name__ == '__main__':
 
@@ -40,9 +41,11 @@ if __name__ == '__main__':
 	#)
 	playerField = PlayerField(['Player1', 'Player2'])
 	gameField = GameField()
+	selectField = SelectField(['Player1', 'Player2'])
 
 	layout.addWidget(playerField)
 	layout.addWidget(gameField)
+	layout.addWidget(selectField)
 	mainWindow.setLayout(layout)
 
 	# Show window and run
