@@ -15,7 +15,7 @@ class LetterButton(QPushButton):
 			u"Э": 8, u"Ю": 4, u"Я": 10, u"": 0
 		}
 		self.points = self.LETTER_VALUES[letter]
-		print "Letter:", letter, "Points:", self.points
+		#print "Letter:", letter, "Points:", self.points
 		self.setColorByValue()
 		#self.setEnabled(False)
 

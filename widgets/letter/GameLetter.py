@@ -7,6 +7,7 @@ class GameLetter(LetterButton):
 
 		self.setAcceptDrops(True)
 		self.filled = 0
+		self.setStyleSheet("background-color: gray")
 	
 	def dragEnterEvent(self, e):
 		if e.mimeData().hasFormat('text/plain'): e.accept()
