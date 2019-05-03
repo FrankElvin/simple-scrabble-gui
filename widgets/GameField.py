@@ -7,8 +7,8 @@ from letter.GameLetter import GameLetter
 
 class GameField(QWidget):
 
-	def __init__(self, parent):
-		super(GameField, self).__init__(parent)
+	def __init__(self):
+		super(GameField, self).__init__()
 
 		gameLayout = QGridLayout()
 
@@ -18,5 +18,5 @@ class GameField(QWidget):
 
 		self.setLayout(gameLayout)
 
-		print "Game window initialized"
+		print "Game field initialized"
 

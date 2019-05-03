@@ -1,10 +1,10 @@
-﻿
-import sys
+﻿import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from random import randint
 
 from widgets.GameField import GameField
+from widgets.PlayerField import PlayerField
 
 if __name__ == '__main__':
 
@@ -38,13 +38,12 @@ if __name__ == '__main__':
 	#LetterButton(letters[randint(1,len(letters)-1)]),
 	#i, j
 	#)
-	gameField = GameField(mainWindow)
+	playerField = PlayerField(['Player1', 'Player2'])
+	gameField = GameField()
+
+	layout.addWidget(playerField)
 	layout.addWidget(gameField)
-	## layout.addWidget(LetterButton(u'Ф'))
-	## layout.addWidget(LetterButton(u'Ъ'))
-	## layout.addWidget(LetterButton(u'Щ'))
-	#
-	#mainWindow.setLayout(layout)
+	mainWindow.setLayout(layout)
 
 	# Show window and run
 	mainWindow.show()
