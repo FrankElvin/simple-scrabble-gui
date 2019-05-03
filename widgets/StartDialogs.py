@@ -7,6 +7,7 @@ class PlayerNumberDialog(QDialog):
 		super(PlayerNumberDialog, self).__init__()
 
 		self.setWindowTitle(u"Введите количество игроков")
+		self.resize(300,50)
 		layout = QHBoxLayout()
 
 		self.playerCounter = QSpinBox()
@@ -42,6 +43,7 @@ class PlayerNameDialog(QDialog):
 		super(PlayerNameDialog, self).__init__()
 
 		self.setWindowTitle(u"Ведите имена игроков")
+		self.resize(300,50)
 		layout = QVBoxLayout()
 		self.players = []
 

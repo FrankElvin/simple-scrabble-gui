@@ -11,17 +11,18 @@ from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 def showStartDialog():
 	numberDialog = PlayerNumberDialog()
 	numberDialog.exec_()
-
-	print "player number:", numberDialog.playerCounter.value() 
+	if not numberDialog.result():
+		return []
 
 	nameDialog = PlayerNameDialog(numberDialog.playerCounter.value())
 	nameDialog.exec_()
+	if not nameDialog.result():
+		return []
 
 	players = []
 	for player in nameDialog.players:
 		players.append(player.input.text())
 	return players
-
 
 
 if __name__ == '__main__':
@@ -30,23 +31,24 @@ if __name__ == '__main__':
 	
 	# get the initial data from dialogs
 	playerList = showStartDialog()
+	if playerList:
 
-	# Build the window widget
-	mainWindow = QWidget()
-	mainWindow.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
-	
-	# loading all subwindows
-	playerField = PlayerField(playerList)
-	gameField = GameField()
-	selectField = SelectField(playerList)
+		# Build the window widget
+		mainWindow = QWidget()
+		mainWindow.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
+		
+		# loading all subwindows
+		playerField = PlayerField(playerList)
+		gameField = GameField()
+		selectField = SelectField(playerList)
 
-	# adding subwindows to the layout
-	layout = QHBoxLayout()
-	layout.addWidget(playerField)
-	layout.addWidget(gameField)
-	layout.addWidget(selectField)
-	mainWindow.setLayout(layout)
+		# adding subwindows to the layout
+		layout = QHBoxLayout()
+		layout.addWidget(playerField)
+		layout.addWidget(gameField)
+		layout.addWidget(selectField)
+		mainWindow.setLayout(layout)
 
-	# Show window and run
-	mainWindow.show()
-	app.exec_()
+		# Show window and run
+		mainWindow.show()
+		app.exec_()
