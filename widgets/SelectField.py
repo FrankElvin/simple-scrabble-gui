@@ -17,7 +17,7 @@ class SelectField(QWidget):
 		for player in self.playerList:
 			letterList = []
 			for i in range(self.startLetterNum):
-				letterList.append(SelectLetter(u"Ф"))
+				letterList.append(SelectLetter(u"Ъ"))
 			self.selecterList.append(LetterSelecter(player, letterList))
 
 		self.selectLayout = QVBoxLayout()
