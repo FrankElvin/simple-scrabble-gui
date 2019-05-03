@@ -6,43 +6,42 @@ from random import randint
 from widgets.GameField import GameField
 from widgets.PlayerField import PlayerField
 from widgets.SelectField import SelectField
+from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
+
+def showStartDialog():
+	numberDialog = PlayerNumberDialog()
+	numberDialog.exec_()
+
+	print "player number:", numberDialog.playerCounter.value() 
+
+	nameDialog = PlayerNameDialog(numberDialog.playerCounter.value())
+	nameDialog.exec_()
+
+	players = []
+	for player in nameDialog.players:
+		players.append(player.input.text())
+	return players
+
+
 
 if __name__ == '__main__':
 
 	app = QApplication(sys.argv)
+	
+	# get the initial data from dialogs
+	playerList = showStartDialog()
 
 	# Build the window widget
 	mainWindow = QWidget()
 	mainWindow.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
 	
-	# Add a label with tooltip
-	#label = QLabel(u"Буквы ниже")
-	#label.setToolTip("This is a <b>QLabel</b> widget with Tooltip")
-	#label.resize(label.sizeHint())
-	#label.move(80, 50)
-	#
-	## try layout
-	layout = QHBoxLayout()
-	#
-	#letters = [
-	#u"А", u"Б", u"В", u"Г", u"Д", u"Е",
-	#u"Ё", u"Ж", u"З", u"И", u"Й", u"К",
-	#u"Л", u"М", u"Н", u"О", u"П", u"Р",
-	#u"С", u"Т", u"У", u"Ф", u"Х", u"Ц",
-	#u"Ч", u"Ш", u"Щ", u"Ъ", u"Ы", u"Ь",
-	#u"Э", u"Ю", u"Я", u""
-	#]
-	#
-	#for i in range(0,14):
-	#for j in range(0,14):
-	#layout.addWidget(
-	#LetterButton(letters[randint(1,len(letters)-1)]),
-	#i, j
-	#)
-	playerField = PlayerField(['Player1', 'Player2'])
+	# loading all subwindows
+	playerField = PlayerField(playerList)
 	gameField = GameField()
-	selectField = SelectField(['Player1', 'Player2'])
+	selectField = SelectField(playerList)
 
+	# adding subwindows to the layout
+	layout = QHBoxLayout()
 	layout.addWidget(playerField)
 	layout.addWidget(gameField)
 	layout.addWidget(selectField)

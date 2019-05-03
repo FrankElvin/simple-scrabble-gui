@@ -23,6 +23,8 @@ class SelectLetter(LetterButton):
 		drag.setMimeData(mimeData)
 		
 		dropAction = drag.start(QtCore.Qt.MoveAction)
-		self.used = 1
-		self.setStyleSheet("background-color: cyan")
+
+		if drag.target():
+			self.used = 1
+			self.setStyleSheet("background-color: cyan")
 
