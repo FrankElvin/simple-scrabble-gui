@@ -16,9 +16,7 @@ class LetterButton(QPushButton):
 		}
 		self.letter = letter
 		self.points = self.LETTER_VALUES[letter]
-		#print "Letter:", letter, "Points:", self.points
 		self.setColorByValue()
-		#self.setEnabled(False)
 
 	def setColorByValue(self):
 		color = ""
