@@ -7,7 +7,7 @@ from selecter.TurnInfo import TurnInfo
 
 class SelectField(QWidget):
 
-	def __init__(self, playerList, letterBag, playerField):
+	def __init__(self, playerList, letterBag, playerField, gameField):
 		super(SelectField, self).__init__()
 
 		self.playerList = playerList
@@ -15,6 +15,7 @@ class SelectField(QWidget):
 		self.activePlayer = 0
 		self.letterBag = letterBag
 		self.playerField = playerField
+		self.gameField = gameField
 		self.frameList = []
 		self.turnInfoList = []
 		self.letterSelecterList = []
@@ -67,7 +68,7 @@ class SelectField(QWidget):
 			self.activePlayer += 1
 	
 	def nextTurn(self):
-		""" Switches the frame with player menu """
+		""" Main logic of the turn ending """
 		self.frameList[self.activePlayer].hide()
 		# add current points to the real Player instance
 		self.playerList[self.activePlayer].increase_score(self.turnInfoList[self.activePlayer].plusScore)
@@ -89,7 +90,10 @@ class SelectField(QWidget):
 			)
 		self.letterSelecterList[self.activePlayer].reloadLetters()
 
+		# close drag and drop for word ends
+		self.gameField.closeWordEnds()
+
+		# change frame with player
 		self.getNextPlayer()
 		self.frameList[self.activePlayer].show()
-
 
