@@ -8,6 +8,8 @@ from widgets.PlayerField import PlayerField
 from widgets.SelectField import SelectField
 from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 
+from impl.Bag import Bag
+
 def showStartDialog():
 	numberDialog = PlayerNumberDialog()
 	numberDialog.exec_()
@@ -33,14 +35,17 @@ if __name__ == '__main__':
 	playerList = showStartDialog()
 	if playerList:
 
+		# initialize the bag
+		letterBag = Bag()
+
 		# Build the window widget
 		mainWindow = QWidget()
 		mainWindow.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
 		
 		# loading all subwindows
 		playerField = PlayerField(playerList)
-		gameField = GameField()
-		selectField = SelectField(playerList)
+		gameField = GameField(letterBag)
+		selectField = SelectField(playerList, letterBag)
 
 		# adding subwindows to the layout
 		layout = QHBoxLayout()
