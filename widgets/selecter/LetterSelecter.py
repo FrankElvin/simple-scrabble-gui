@@ -3,10 +3,10 @@ from PyQt4.QtCore import *
 
 class LetterSelecter(QWidget):
 
-	def __init__(self, playerName, letterList):
+	def __init__(self, player, letterList):
 		super(LetterSelecter, self).__init__()
 
-		self.playerName = playerName
+		self.playerName = player.get_name()
 		self.letterList = letterList
 		self.letterLayout = QGridLayout()
 		self.letterWidth = 5

@@ -9,6 +9,7 @@ from widgets.SelectField import SelectField
 from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 
 from impl.Bag import Bag
+from impl.Player import Player
 
 def showStartDialog():
 	numberDialog = PlayerNumberDialog()
@@ -23,7 +24,10 @@ def showStartDialog():
 
 	players = []
 	for player in nameDialog.players:
-		players.append(player.input.text())
+		#players.append(player.input.text())
+		players.append(
+			Player(player.input.text())
+		)
 	return players
 
 
@@ -45,7 +49,7 @@ if __name__ == '__main__':
 		# loading all subwindows
 		playerField = PlayerField(playerList)
 		gameField = GameField(letterBag)
-		selectField = SelectField(playerList, letterBag)
+		selectField = SelectField(playerList, letterBag, playerField)
 
 		# adding subwindows to the layout
 		layout = QHBoxLayout()
