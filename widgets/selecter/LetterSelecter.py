@@ -13,9 +13,29 @@ class LetterSelecter(QWidget):
 
 		self.setLayout(self.letterLayout)
 		self.reloadLetters()
+	
+	def addLetter(self, letter):
+		print "adding letter", letter
+		self.letterList.append(letter)
+	
+	def removeUsedLetters(self):
+
+		to_remove = []
+		for letter in self.letterList:
+			print "reading letter", letter.letter
+			if letter.used == 1:
+				print "used letter, removing"
+				to_remove.append(letter)
+				#self.letterList.remove(letter)
+		print "===="
+
+		for remove in to_remove:
+			self.letterList.remove(remove)
 
 	def reloadLetters(self):
-		for i in reversed(range(self.letterLayout.count())):
+
+		# remove all widgets
+		for i in reversed(range(self.letterLayout.count())): 
 			self.letterLayout.itemAt(i).widget().setParent(None)
 
 		row_number = 0

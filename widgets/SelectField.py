@@ -17,6 +17,7 @@ class SelectField(QWidget):
 		self.playerField = playerField
 		self.frameList = []
 		self.turnInfoList = []
+		self.letterSelecterList = []
 
 		layout = QVBoxLayout()
 
@@ -38,7 +39,8 @@ class SelectField(QWidget):
 			btn.clicked.connect(self.nextTurn)
 
 			ly.addWidget( QLabel(u"Ход игрока %s" %player.get_name()))
-			ly.addWidget(LetterSelecter(player, letterList))
+			letterSelecter = LetterSelecter(player, letterList)
+			ly.addWidget(letterSelecter)
 			ly.addStretch(20)
 			ly.addWidget(turnInfo)
 			ly.addWidget(btn)
@@ -46,6 +48,7 @@ class SelectField(QWidget):
 			frame.setLayout(ly)
 			self.frameList.append(frame)
 			self.turnInfoList.append(turnInfo)
+			self.letterSelecterList.append(letterSelecter)
 
 		for frame in self.frameList:
 			layout.addWidget(frame)
@@ -66,13 +69,25 @@ class SelectField(QWidget):
 	def nextTurn(self):
 		""" Switches the frame with player menu """
 		self.frameList[self.activePlayer].hide()
-
-		self.playerList[self.activePlayer].increase_score(
-			self.turnInfoList[self.activePlayer].plusScore
-		)
+		# add current points to the real Player instance
+		self.playerList[self.activePlayer].increase_score(self.turnInfoList[self.activePlayer].plusScore)
+		# actualize points on the Player screen basing on Player instance
 		self.playerField.actualizePoints(self.activePlayer)
-
+		# set turn info conditions to zeros
 		self.turnInfoList[self.activePlayer].endTurn()
+
+		# clear old letters from the letter list
+		self.letterSelecterList[self.activePlayer].removeUsedLetters()
+
+		# add new letters to players hand
+		for i in range(self.turnInfoList[self.activePlayer].letterCounter.value()):
+			self.letterSelecterList[self.activePlayer].addLetter(
+				SelectLetter(
+					self.letterBag.take_from_bag().get_letter(),
+					self.turnInfoList[self.activePlayer]
+				)
+			)
+		self.letterSelecterList[self.activePlayer].reloadLetters()
 
 		self.getNextPlayer()
 		self.frameList[self.activePlayer].show()
