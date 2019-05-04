@@ -36,3 +36,5 @@ class LetterButton(QPushButton):
 		self.points = self.LETTER_VALUES[unicode(letter)]
 		self.setColorByValue()
 
+	def __str__(self):	
+		return "Letter %s" %unicode(self.text())

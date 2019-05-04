@@ -43,7 +43,11 @@ class GameLetter(LetterButton):
 
 		out_list = []
 		for coord in zip(xs, ys):
-			out_list.append(self.parent().letterMatrix[coord[0]][coord[1]])
+			if (
+				(coord[0]>=0 and coord[1]>=0) and 
+				(coord[0]<len(self.parent().letterMatrix) and coord[1]<len(self.parent().letterMatrix))
+			):
+				out_list.append(self.parent().letterMatrix[coord[0]][coord[1]])
 		return out_list
 	
 	def openNearby(self):

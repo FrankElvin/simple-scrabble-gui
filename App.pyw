@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		# loading all subwindows
 		playerField = PlayerField(playerList)
 		gameField = GameField(letterBag)
-		selectField = SelectField(playerList, letterBag, playerField)
+		selectField = SelectField(playerList, letterBag, playerField, gameField)
 
 		# adding subwindows to the layout
 		layout = QHBoxLayout()
