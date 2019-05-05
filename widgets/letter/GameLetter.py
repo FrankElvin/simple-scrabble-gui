@@ -42,7 +42,8 @@ class GameLetter(LetterButton):
 			self.filled = True
 			self.filledNow = True
 
-			self.getNearbyWords()
+			plusPoints = self.getPointsFromLetter()
+			print "Points added:", plusPoints
 	
 	def getNearbyLetters(self):
 		xs = self.x-1, self.x  , self.x  , self.x+1
@@ -62,6 +63,7 @@ class GameLetter(LetterButton):
 		for letter in list: letter.setAcceptDrops(True)
 	
 	def getWord(self, row, start):
+		""" Returns list, containing a "word": letter chain nearby to the current letter. This list always starts with a current letter. """
 		left_done = False
 		right_done = False
 		i = 1
@@ -93,40 +95,67 @@ class GameLetter(LetterButton):
 		for word in words:
 			if len(word) != 1:
 				for letter in word:
-					if letter.multiplier['type'] == 'word':
-						mult *= letter.multiplier['number']
+					if letter.multiplier['type'] == 'word': mult *= letter.multiplier['number']
 		return mult
 	
-	def getWordPoints(self, word):
-		points = 0
-		word_mult = self.getWordMultiplier([word])
+	
+	def getPointsFromLetter(self):
+		"""Calculates point summary for adding letter to the game field."""
 
-		for letter in word:
-			print unicode(letter)
-			if letter.multiplier['type'] == 'letter':
-				points += letter.points * letter.multiplier['number']
-			else:
-				points += letter.points
-		print "Raw points for row word: %d " %points
-		print "word multiplier for row word: %d" %word_mult
-		print "Result for row word: %d" %(points * word_mult)
-		return points * word_mult
+		# getting words including new letter
+		words = self.getNearbyWords()
 
+		# wariable for point change
+		point_delta = 0
 
+		# if we place letter on word multiplier space, we should add points form other letters in the word
+		if self.multiplier['type'] == 'word':
+			for word in words:
+				point_delta += self.getWordDelta(word)
+		print "Points for previous letters in word:", point_delta
+
+		# self points are: letter points x word multiplier(s) x space multiplier (letter or word)
+		if self.multiplier['type'] == 'word':
+			# self multiplier is included in word multiplier
+			point_delta += self.points * self.getWordMultiplier(words)
+		else:
+			point_delta += self.points * self.multiplier['number'] * self.getWordMultiplier(words)
+
+		return point_delta
+			
 	def getNearbyWords(self):
-
+		"""Returns the list of words that include given letter."""
 		row = self.parent().letterMatrix[self.x]
 		row_word = self.getWord(row, self.y)
 
 		column = self.parent().getMatrixColumn(self.y)
 		column_word = self.getWord(column, self.x)
 
-		word_mult = self.getWordMultiplier([row_word, column_word])
+		return row_word, column_word
+	
+	def getWordDelta(self, word):
+		"""Calculates points added to word by placing letter on a word multiplier position"""
+		word_delta = 0
+		if len(word) > 1:
+			# result for word with new letter ===='
+			full_points = self.getWordPoints(word)
+			# result for word without adding letter ===='
+			points_before = self.getWordPoints(word[1:])
+			word_delta = full_points - points_before - self.points*self.multiplier['number']
+		return word_delta
 
-		print '===== result for word with new letter ===='
-		full_points = self.getWordPoints(row_word)
-		print '===== result for word without adding letter ===='
-		points_before = self.getWordPoints(row_word[1:])
-		print "delta is: %d" %(full_points - points_before)
-		print '*'*40
+	def getWordPoints(self, word):
+		"""Calculates the point sum for one word."""
+		points = 0
+		word_mult = self.getWordMultiplier([word])
 
+		for letter in word:
+			#print unicode(letter)
+			if letter.multiplier['type'] == 'letter':
+				points += letter.points * letter.multiplier['number']
+			else:
+				points += letter.points
+		#print "Raw points for word: %d " %points
+		#print "word multiplier for word: %d" %word_mult
+		#print "Result for word: %d" %(points * word_mult)
+		return points * word_mult
