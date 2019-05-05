@@ -18,9 +18,7 @@ class MainWindow(QWidget):
 		self.gameField = GameField(self.letterBag)
 		self.selectField = SelectField(
 			self.playerList,
-			self.letterBag,
-			self.playerField,
-			self.gameField
+			self.letterBag
 		)
 
 		layout = QHBoxLayout()

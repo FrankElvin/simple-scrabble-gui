@@ -7,15 +7,13 @@ from selecter.TurnInfo import TurnInfo
 
 class SelectField(QWidget):
 
-	def __init__(self, playerList, letterBag, playerField, gameField):
+	def __init__(self, playerList, letterBag):
 		super(SelectField, self).__init__()
 
 		self.playerList = playerList
 		self.startLetterNum = 7
 		self.activePlayer = 0
 		self.letterBag = letterBag
-		self.playerField = playerField
-		self.gameField = gameField
 		self.frameList = []
 		self.turnInfoList = []
 		self.letterSelecterList = []
@@ -73,7 +71,7 @@ class SelectField(QWidget):
 		# add current points to the real Player instance
 		self.playerList[self.activePlayer].increase_score(self.turnInfoList[self.activePlayer].plusScore)
 		# actualize points on the Player screen basing on Player instance
-		self.playerField.actualizePoints(self.activePlayer)
+		self.parent().playerField.actualizePoints(self.activePlayer)
 		# set turn info conditions to zeros
 		self.turnInfoList[self.activePlayer].endTurn()
 
@@ -88,7 +86,7 @@ class SelectField(QWidget):
 		self.letterSelecterList[self.activePlayer].reloadLetters()
 
 		# close drag and drop for word ends
-		self.gameField.closeWordEnds()
+		self.parent().gameField.closeWordEnds()
 
 		# change frame with player
 		self.getNextPlayer()
