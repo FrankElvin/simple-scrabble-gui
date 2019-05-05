@@ -3,11 +3,10 @@ from PyQt4 import QtCore, QtGui
 
 class SelectLetter(LetterButton):
 
-	def __init__(self, letter, turnInfo):
+	def __init__(self, letter):
 		super(SelectLetter, self).__init__(letter)
 
 		self.used = 0
-		self.turnInfo = turnInfo
 
 	def mouseMoveEvent(self, e):
 		
@@ -31,5 +30,3 @@ class SelectLetter(LetterButton):
 		if drag.target():
 			self.used = 1
 			self.setStyleSheet("background-color: cyan")
-			self.turnInfo.addPoints(self.points)
-

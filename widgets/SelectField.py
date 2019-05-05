@@ -33,7 +33,7 @@ class SelectField(QWidget):
 
 			for i in range(self.startLetterNum):
 				letterList.append(
-					SelectLetter(self.letterBag.take_from_bag().get_letter(), turnInfo)
+					SelectLetter(self.letterBag.take_from_bag().get_letter())
 				)
 
 			btn = QPushButton(u"Завершить ход")
@@ -83,10 +83,7 @@ class SelectField(QWidget):
 		# add new letters to players hand
 		for i in range(self.turnInfoList[self.activePlayer].letterCounter.value()):
 			self.letterSelecterList[self.activePlayer].addLetter(
-				SelectLetter(
-					self.letterBag.take_from_bag().get_letter(),
-					self.turnInfoList[self.activePlayer]
-				)
+				SelectLetter(self.letterBag.take_from_bag().get_letter() )
 			)
 		self.letterSelecterList[self.activePlayer].reloadLetters()
 
