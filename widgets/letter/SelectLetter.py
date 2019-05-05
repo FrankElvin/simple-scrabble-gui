@@ -6,7 +6,7 @@ class SelectLetter(LetterButton):
 	def __init__(self, letter):
 		super(SelectLetter, self).__init__(letter)
 
-		self.used = 0
+		self.used = False
 
 	def mouseMoveEvent(self, e):
 		
@@ -15,7 +15,7 @@ class SelectLetter(LetterButton):
 			return
 
 		# no drag if used
-		if self.used == 1:
+		if self.used:
 			return
 
 		mimeData = QtCore.QMimeData()
@@ -28,5 +28,9 @@ class SelectLetter(LetterButton):
 
 		# if drag was successfull
 		if drag.target():
-			self.used = 1
+			self.used = True
 			self.setStyleSheet("background-color: cyan")
+	
+	def reload(self):
+		self.used = False
+		self.setColorByValue()	

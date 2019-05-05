@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 from letter.SelectLetter import SelectLetter
 from selecter.LetterSelecter import LetterSelecter
 from selecter.TurnInfo import TurnInfo
+from selecter.PlayerFrame import PlayerFrame
 
 class SelectField(QWidget):
 
@@ -15,39 +16,20 @@ class SelectField(QWidget):
 		self.activePlayer = 0
 		self.letterBag = letterBag
 		self.frameList = []
-		self.turnInfoList = []
-		self.letterSelecterList = []
-
 		layout = QVBoxLayout()
 
 		# initialize 1 frame per 1 player
 		for player in self.playerList:
 
-			frame = QFrame()
-			ly = QVBoxLayout()
-
 			letterList = []
-			turnInfo = TurnInfo()
-
 			for i in range(self.startLetterNum):
 				letterList.append(
 					SelectLetter(self.letterBag.take_from_bag().get_letter())
 				)
-
-			btn = QPushButton(u"Завершить ход")
-			btn.clicked.connect(self.nextTurn)
-
-			ly.addWidget( QLabel(u"Ход игрока %s" %player.get_name()))
 			letterSelecter = LetterSelecter(player, letterList)
-			ly.addWidget(letterSelecter)
-			ly.addStretch(20)
-			ly.addWidget(turnInfo)
-			ly.addWidget(btn)
 
-			frame.setLayout(ly)
+			frame = PlayerFrame(player, letterSelecter)
 			self.frameList.append(frame)
-			self.turnInfoList.append(turnInfo)
-			self.letterSelecterList.append(letterSelecter)
 
 		for frame in self.frameList:
 			layout.addWidget(frame)
@@ -59,6 +41,11 @@ class SelectField(QWidget):
 		self.setLayout(layout)
 		print "Select field initialized"
 	
+	def connectButtons(self):
+		for frame in self.frameList:
+			frame.turnEnd.clicked.connect(self.nextTurn)
+			frame.turnRevert.clicked.connect(frame.revertTurn)
+	
 	def getNextPlayer(self):
 		if self.activePlayer == len(self.playerList) -1:
 			self.activePlayer = 0
@@ -66,30 +53,32 @@ class SelectField(QWidget):
 			self.activePlayer += 1
 	
 	def addPointsToCurrent(self, points):
-		self.turnInfoList[self.activePlayer].addPoints(points)
+		self.frameList[self.activePlayer].turnInfo.addPoints(points)
 	
 	def nextTurn(self):
 		""" Main logic of the turn ending """
 		self.frameList[self.activePlayer].hide()
 		# add current points to the real Player instance
-		self.playerList[self.activePlayer].increase_score(self.turnInfoList[self.activePlayer].plusScore)
+		self.playerList[self.activePlayer].increase_score(
+			self.frameList[self.activePlayer].turnInfo.plusScore
+		)
 		# actualize points on the Player screen basing on Player instance
 		self.parent().playerField.actualizePoints(self.activePlayer)
 		# set turn info conditions to zeros
-		self.turnInfoList[self.activePlayer].endTurn()
+		self.frameList[self.activePlayer].turnInfo.endTurn()
 
 		# clear old letters from the letter list
-		self.letterSelecterList[self.activePlayer].removeUsedLetters()
+		self.frameList[self.activePlayer].letterSelecter.removeUsedLetters()
 
 		# add new letters to players hand
-		for i in range(self.turnInfoList[self.activePlayer].letterCounter.value()):
-			self.letterSelecterList[self.activePlayer].addLetter(
+		for i in range(self.frameList[self.activePlayer].turnInfo.letterCounter.value()):
+			self.frameList[self.activePlayer].letterSelecter.addLetter(
 				SelectLetter(self.letterBag.take_from_bag().get_letter() )
 			)
-		self.letterSelecterList[self.activePlayer].reloadLetters()
+		self.frameList[self.activePlayer].letterSelecter.reloadLetters()
 
 		# Prepare game field to the next turn
-		self.parent().gameField.prepareToNextTurn()
+		self.parent().gameField.confirmActions()
 
 		# change frame with player
 		self.getNextPlayer()

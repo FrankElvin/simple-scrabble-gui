@@ -27,4 +27,6 @@ class MainWindow(QWidget):
 		layout.addWidget(self.selectField)
 
 		self.setLayout(layout)
+		self.selectField.connectButtons()
+
 

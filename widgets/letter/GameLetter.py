@@ -5,31 +5,48 @@ class GameLetter(LetterButton):
 	def __init__(self, letter, x, y, multiplier):
 		super(GameLetter, self).__init__(letter)
 
-		#self.setAcceptDrops(True)
 		self.setAcceptDrops(False)
 		self.filled = False
 		self.filledNow = False
 		self.x = x
 		self.y = y
 		self.multiplier = multiplier
+		self.openedBySelf = []
 
-		if multiplier['type'] == 'letter':
-			if multiplier['number'] == 2:
+		self.applyColor()
+
+	def __str__(self):
+		return "Letter %s, points: %d, multiplier: %s" %(unicode(self.text()), self.points, str(self.multiplier))
+
+	def applyColor(self):
+		if self.multiplier['type'] == 'letter':
+			if self.multiplier['number'] == 2:
 				self.setStyleSheet("background-color: cyan")
-			elif multiplier['number'] == 3:
+			elif self.multiplier['number'] == 3:
 				self.setStyleSheet("background-color: blue")
-		elif multiplier['type'] == 'word':
-			if multiplier['number'] == 2:
+		elif self.multiplier['type'] == 'word':
+			if self.multiplier['number'] == 2:
 				self.setStyleSheet("background-color: pink")
-			elif multiplier['number'] == 3:
+			elif self.multiplier['number'] == 3:
 				self.setStyleSheet("background-color: red")
 		else:
 			self.setStyleSheet("background-color: green")
-	
-	def __str__(self):
-		return "Letter %s, points: %d, multiplier: %s" %(unicode(self.text()), self.points, str(self.multiplier))
+		
+	def erase(self):
+		self.filled = False
+		self.filledNow = False
+		self.setText("")
+		self.applyColor()
+
+		if (self.x == 7 and self.y == 7):
+			self.setAcceptDrops(True)
+
+		for letter in self.openedBySelf:
+			if not(letter.x == 7 and letter.y == 7):
+				letter.setAcceptDrops(False)
+
+		self.openedBySelf = []
 			
-	
 	def dragEnterEvent(self, e):
 		if e.mimeData().hasFormat('text/plain'): e.accept()
 		else: e.ignore() 
@@ -43,7 +60,6 @@ class GameLetter(LetterButton):
 			self.filledNow = True
 
 			plusPoints = self.getPointsFromLetter()
-			print "Points added:", plusPoints
 			self.parent().parent().selectField.addPointsToCurrent(plusPoints)
 	
 	def getNearbyLetters(self):
@@ -56,12 +72,14 @@ class GameLetter(LetterButton):
 				(coord[0]>=0 and coord[1]>=0) and 
 				(coord[0]<len(self.parent().letterMatrix) and coord[1]<len(self.parent().letterMatrix))
 			):
-				out_list.append(self.parent().letterMatrix[coord[0]][coord[1]])
+				letter_to_open = self.parent().letterMatrix[coord[0]][coord[1]]
+				if not letter_to_open.filled:
+					out_list.append(letter_to_open)
 		return out_list
 	
 	def openNearby(self):
-		list = self.getNearbyLetters()
-		for letter in list: letter.setAcceptDrops(True)
+		self.openedBySelf = self.getNearbyLetters()
+		for letter in self.openedBySelf: letter.setAcceptDrops(True)
 	
 	def getWord(self, row, start):
 		""" Returns list, containing a "word": letter chain nearby to the current letter. This list always starts with a current letter. """
@@ -99,7 +117,6 @@ class GameLetter(LetterButton):
 					if letter.multiplier['type'] == 'word': mult *= letter.multiplier['number']
 		return mult
 	
-	
 	def getPointsFromLetter(self):
 		"""Calculates point summary for adding letter to the game field."""
 
@@ -113,7 +130,6 @@ class GameLetter(LetterButton):
 		if self.multiplier['type'] == 'word':
 			for word in words:
 				point_delta += self.getWordDelta(word)
-		print "Points for previous letters in word:", point_delta
 
 		# self points are: letter points x word multiplier(s) x space multiplier (letter or word)
 		if self.multiplier['type'] == 'word':
@@ -151,12 +167,8 @@ class GameLetter(LetterButton):
 		word_mult = self.getWordMultiplier([word])
 
 		for letter in word:
-			#print unicode(letter)
 			if letter.multiplier['type'] == 'letter':
 				points += letter.points * letter.multiplier['number']
 			else:
 				points += letter.points
-		#print "Raw points for word: %d " %points
-		#print "word multiplier for word: %d" %word_mult
-		#print "Result for word: %d" %(points * word_mult)
 		return points * word_mult
