@@ -1,11 +1,8 @@
 ﻿import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from random import randint
 
-from widgets.GameField import GameField
-from widgets.PlayerField import PlayerField
-from widgets.SelectField import SelectField
+from widgets.MainWindow import MainWindow
 from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 
 from impl.Bag import Bag
@@ -43,20 +40,7 @@ if __name__ == '__main__':
 		letterBag = Bag()
 
 		# Build the window widget
-		mainWindow = QWidget()
-		mainWindow.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
-		
-		# loading all subwindows
-		playerField = PlayerField(playerList)
-		gameField = GameField(letterBag)
-		selectField = SelectField(playerList, letterBag, playerField, gameField)
-
-		# adding subwindows to the layout
-		layout = QHBoxLayout()
-		layout.addWidget(playerField)
-		layout.addWidget(gameField)
-		layout.addWidget(selectField)
-		mainWindow.setLayout(layout)
+		mainWindow = MainWindow(playerList, letterBag)
 
 		# Show window and run
 		mainWindow.show()

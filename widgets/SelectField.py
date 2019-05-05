@@ -7,15 +7,13 @@ from selecter.TurnInfo import TurnInfo
 
 class SelectField(QWidget):
 
-	def __init__(self, playerList, letterBag, playerField, gameField):
+	def __init__(self, playerList, letterBag):
 		super(SelectField, self).__init__()
 
 		self.playerList = playerList
 		self.startLetterNum = 7
 		self.activePlayer = 0
 		self.letterBag = letterBag
-		self.playerField = playerField
-		self.gameField = gameField
 		self.frameList = []
 		self.turnInfoList = []
 		self.letterSelecterList = []
@@ -33,7 +31,7 @@ class SelectField(QWidget):
 
 			for i in range(self.startLetterNum):
 				letterList.append(
-					SelectLetter(self.letterBag.take_from_bag().get_letter(), turnInfo)
+					SelectLetter(self.letterBag.take_from_bag().get_letter())
 				)
 
 			btn = QPushButton(u"Завершить ход")
@@ -67,13 +65,16 @@ class SelectField(QWidget):
 		else:
 			self.activePlayer += 1
 	
+	def addPointsToCurrent(self, points):
+		self.turnInfoList[self.activePlayer].addPoints(points)
+	
 	def nextTurn(self):
 		""" Main logic of the turn ending """
 		self.frameList[self.activePlayer].hide()
 		# add current points to the real Player instance
 		self.playerList[self.activePlayer].increase_score(self.turnInfoList[self.activePlayer].plusScore)
 		# actualize points on the Player screen basing on Player instance
-		self.playerField.actualizePoints(self.activePlayer)
+		self.parent().playerField.actualizePoints(self.activePlayer)
 		# set turn info conditions to zeros
 		self.turnInfoList[self.activePlayer].endTurn()
 
@@ -83,15 +84,12 @@ class SelectField(QWidget):
 		# add new letters to players hand
 		for i in range(self.turnInfoList[self.activePlayer].letterCounter.value()):
 			self.letterSelecterList[self.activePlayer].addLetter(
-				SelectLetter(
-					self.letterBag.take_from_bag().get_letter(),
-					self.turnInfoList[self.activePlayer]
-				)
+				SelectLetter(self.letterBag.take_from_bag().get_letter() )
 			)
 		self.letterSelecterList[self.activePlayer].reloadLetters()
 
-		# close drag and drop for word ends
-		self.gameField.closeWordEnds()
+		# Prepare game field to the next turn
+		self.parent().gameField.prepareToNextTurn()
 
 		# change frame with player
 		self.getNextPlayer()
