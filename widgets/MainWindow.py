@@ -14,7 +14,7 @@ class MainWindow(QWidget):
 		self.setWindowTitle(u"Скромный интерфейс Scrubble на русском")
 	
 		# loading all subwindows
-		self.playerField = PlayerField(self.playerList)
+		self.playerField = PlayerField(self.playerList, self.letterBag)
 		self.gameField = GameField(self.letterBag)
 		self.selectField = SelectField(
 			self.playerList,
@@ -27,6 +27,7 @@ class MainWindow(QWidget):
 		layout.addWidget(self.selectField)
 
 		self.setLayout(layout)
+		self.playerField.actualizeBag()
 		self.selectField.connectButtons()
 
 

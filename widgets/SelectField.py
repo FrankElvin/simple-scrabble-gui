@@ -77,10 +77,13 @@ class SelectField(QWidget):
 			)
 		self.frameList[self.activePlayer].letterSelecter.reloadLetters()
 
+		# actualize tile counter
+		self.parent().playerField.actualizeBag()
+
 		# Prepare game field to the next turn
 		self.parent().gameField.confirmActions()
 
 		# change frame with player
 		self.getNextPlayer()
 		self.frameList[self.activePlayer].show()
-
+	
