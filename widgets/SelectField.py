@@ -65,6 +65,9 @@ class SelectField(QWidget):
 		else:
 			self.activePlayer += 1
 	
+	def addPointsToCurrent(self, points):
+		self.turnInfoList[self.activePlayer].addPoints(points)
+	
 	def nextTurn(self):
 		""" Main logic of the turn ending """
 		self.frameList[self.activePlayer].hide()
@@ -85,8 +88,8 @@ class SelectField(QWidget):
 			)
 		self.letterSelecterList[self.activePlayer].reloadLetters()
 
-		# close drag and drop for word ends
-		self.parent().gameField.closeWordEnds()
+		# Prepare game field to the next turn
+		self.parent().gameField.prepareToNextTurn()
 
 		# change frame with player
 		self.getNextPlayer()

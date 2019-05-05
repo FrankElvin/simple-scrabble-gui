@@ -44,6 +44,7 @@ class GameLetter(LetterButton):
 
 			plusPoints = self.getPointsFromLetter()
 			print "Points added:", plusPoints
+			self.parent().parent().selectField.addPointsToCurrent(plusPoints)
 	
 	def getNearbyLetters(self):
 		xs = self.x-1, self.x  , self.x  , self.x+1

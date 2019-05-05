@@ -65,12 +65,17 @@ class GameField(QWidget):
 				arrayRow[i+1].setAcceptDrops(False)
 	
 	
-	def closeWordEnds(self):
+	def prepareToNextTurn(self):
+
+		# closing word ends for insert
 		for row in self.letterMatrix:
 			self.closeWordEndsInRow(row)
+			# to calculate points correctly
+			for letter in row: letter.filledNow = False
 
 		for j in range(len(self.letterMatrix[0])):
 			column = self.getMatrixColumn(j)
 			self.closeWordEndsInRow(column)
-					
+
+	
 
