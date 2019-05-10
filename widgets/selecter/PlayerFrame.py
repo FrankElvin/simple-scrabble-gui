@@ -36,3 +36,13 @@ class PlayerFrame(QFrame):
 		for letter in self.letterSelecter.letterList:
 			if letter.used: letter.reload()
 
+	def checkEmptyHand(self):
+		if self.letterSelecter.countRemaining() == 0:
+			return True
+		else:
+			return False
+
+	def applyPassOnPlayer(self):
+		if not(self.letterSelecter.checkUsed()):
+			self.player.passed += 1
+
