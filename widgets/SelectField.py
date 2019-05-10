@@ -97,7 +97,7 @@ class SelectField(QWidget):
 		self.frameList[self.activePlayer].letterSelecter.removeUsedLetters()
 
 		# add new letters to players hand
-		for i in range(self.frameList[self.activePlayer].turnInfo.letterCounter.value()):
+		for i in range(self.startLetterNum - len(self.frameList[self.activePlayer].letterSelecter.letterList)):
 			try:
 				self.frameList[self.activePlayer].letterSelecter.addLetter(
 					SelectLetter(self.letterBag.take_from_bag().get_letter() )
