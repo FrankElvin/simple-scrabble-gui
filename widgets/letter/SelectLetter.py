@@ -7,6 +7,21 @@ class SelectLetter(LetterButton):
 		super(SelectLetter, self).__init__(letter)
 
 		self.used = False
+		self.toChange = False
+		self.clicked.connect(self.addToChange)
+
+	def __str__(self):
+		return "Letter %s; used: %s; toChange: %s" %(
+			unicode(self.text()),
+			self.used,
+			self.toChange
+		)
+
+	def addToChange(self):
+		if not self.parent().checkUsed():
+			self.toChange = True
+			self.setStyleSheet("background-color: magenta")
+			self.parent().parent().prepareToChange()
 
 	def mouseMoveEvent(self, e):
 		
@@ -15,7 +30,7 @@ class SelectLetter(LetterButton):
 			return
 
 		# no drag if used
-		if self.used:
+		if self.used or self.parent().checkChanged():
 			return
 
 		mimeData = QtCore.QMimeData()
@@ -33,4 +48,5 @@ class SelectLetter(LetterButton):
 	
 	def reload(self):
 		self.used = False
+		self.toChange = False
 		self.setColorByValue()	

@@ -52,6 +52,14 @@ class LetterSelecter(QWidget):
 				break
 		return used
 
+	def checkChanged(self):
+		changed = False
+		for letter in self.letterList:
+			if letter.toChange == True:
+				changed = True
+				break
+		return changed
+
 	def countRemaining(self):
 		return len(self.letterList)
 
