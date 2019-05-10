@@ -19,10 +19,23 @@ class LetterSelecter(QWidget):
 	
 	def removeUsedLetters(self):
 
+		letterBag = self.parent().parent().letterBag
+
 		to_remove = []
 		for letter in self.letterList:
-			if letter.used == 1:
+			if letter.used:
 				to_remove.append(letter)
+
+			if letter.toChange:
+				to_remove.append(letter)
+				letterBag.add_to_bag(
+					letterBag.tile_class(
+						letter.letter,
+						letterBag.letter_values
+					),
+					1
+				)
+		letterBag.shuffle_self()
 
 		for remove in to_remove:
 			self.letterList.remove(remove)

@@ -5,7 +5,7 @@ from PyQt4.QtCore import *
 from widgets.MainWindow import MainWindow
 from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 
-from impl.Bag import Bag
+from impl.Bag import Bag, LETTER_VALUES, Tile
 from impl.Player import Player
 
 def showStartDialog():
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 	if playerList:
 
 		# initialize the bag
-		letterBag = Bag()
+		letterBag = Bag(LETTER_VALUES, Tile)
 
 		# Build the window widget
 		mainWindow = MainWindow(playerList, letterBag)

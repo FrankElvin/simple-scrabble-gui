@@ -80,7 +80,10 @@ class SelectField(QWidget):
 
 	def nextTurn(self):
 		""" Main logic of the turn ending """
-		self.frameList[self.activePlayer].hide()
+
+		activeFrame = self.frameList[self.activePlayer]
+		activeFrame.hide()
+
 		# add current points to the real Player instance
 		self.playerList[self.activePlayer].increase_score(
 			self.frameList[self.activePlayer].turnInfo.plusScore
@@ -88,22 +91,23 @@ class SelectField(QWidget):
 		# actualize points on the Player screen basing on Player instance
 		self.parent().playerField.actualizePoints(self.activePlayer)
 		# set turn info conditions to zeros
-		self.frameList[self.activePlayer].turnInfo.endTurn()
+		activeFrame.turnInfo.endTurn()
 
 		# set pass on player if it passed
-		self.frameList[self.activePlayer].applyPassOnPlayer()
+		activeFrame.applyPassOnPlayer()
 
 		# clear old letters from the letter list
-		self.frameList[self.activePlayer].letterSelecter.removeUsedLetters()
+		activeFrame.letterSelecter.removeUsedLetters()
 
 		# add new letters to players hand
-		for i in range(self.startLetterNum - len(self.frameList[self.activePlayer].letterSelecter.letterList)):
+		for i in range(self.startLetterNum - len(activeFrame.letterSelecter.letterList)):
 			try:
-				self.frameList[self.activePlayer].letterSelecter.addLetter(
+				activeFrame.letterSelecter.addLetter(
 					SelectLetter(self.letterBag.take_from_bag().get_letter() )
 				)
 			except: pass
-		self.frameList[self.activePlayer].letterSelecter.reloadLetters()
+		activeFrame.letterSelecter.reloadLetters()
+		activeFrame.resetEndText()
 
 		# actualize tile counter
 		self.parent().playerField.actualizeBag()
@@ -116,7 +120,6 @@ class SelectField(QWidget):
 			outMsg = FinishDialog(self.playerList)
 			retval = outMsg.exec_()
 			self.parent().close()
-
 
 		# change frame with player
 		self.getNextPlayer()

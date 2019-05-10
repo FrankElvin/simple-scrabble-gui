@@ -31,11 +31,14 @@ class PlayerFrame(QFrame):
 
 		# remove new letters from the game field
 		self.parent().parent().gameField.revertActions()
-		self.turnEnd.setText(u"Завершить ход")
+		self.resetEndText()
 
 		# reload used letters at player frame
 		for letter in self.letterSelecter.letterList:
 			letter.reload()
+
+	def resetEndText(self):
+		self.turnEnd.setText(u"Завершить ход")
 
 	def checkEmptyHand(self):
 		if self.letterSelecter.countRemaining() == 0:
