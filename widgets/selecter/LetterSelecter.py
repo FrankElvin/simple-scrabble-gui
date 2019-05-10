@@ -43,4 +43,15 @@ class LetterSelecter(QWidget):
 			if column_number > self.letterWidth:
 				row_number += 1
 				column_number = 0
-		
+
+	def checkUsed(self):
+		used = False
+		for letter in self.letterList:
+			if letter.used == True:
+				used = True
+				break
+		return used
+
+	def countRemaining(self):
+		return len(self.letterList)
+
