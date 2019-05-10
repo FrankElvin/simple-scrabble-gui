@@ -31,49 +31,54 @@ class Tile:
 
 class Bag:
 
-    def __init__(self):
+    def __init__(self, LETTER_VALUES, tile_class):
         self.bag = []
+        self.letter_values = LETTER_VALUES
+        self.tile_class = tile_class
         self.initialize_bag()
 
     def add_to_bag(self, tile, quantity):
         for i in range(quantity):
             self.bag.append(tile)
 
+    def shuffle_self(self):
+        shuffle(self.bag)
+
     def initialize_bag(self):
 
-        self.add_to_bag(Tile(u"А", LETTER_VALUES), 9)
-        self.add_to_bag(Tile(u"Б", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"В", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Г", LETTER_VALUES), 4)
-        self.add_to_bag(Tile(u"Д", LETTER_VALUES), 12)
-        self.add_to_bag(Tile(u"Е", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Ё", LETTER_VALUES), 3)
-        self.add_to_bag(Tile(u"Ж", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"З", LETTER_VALUES), 9)
-        self.add_to_bag(Tile(u"И", LETTER_VALUES), 9)
-        self.add_to_bag(Tile(u"Й", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"К", LETTER_VALUES), 4)
-        self.add_to_bag(Tile(u"Л", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"М", LETTER_VALUES), 6)
-        self.add_to_bag(Tile(u"Н", LETTER_VALUES), 8)
-        self.add_to_bag(Tile(u"О", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"П", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"Р", LETTER_VALUES), 6)
-        self.add_to_bag(Tile(u"С", LETTER_VALUES), 4)
-        self.add_to_bag(Tile(u"Т", LETTER_VALUES), 6)
-        self.add_to_bag(Tile(u"У", LETTER_VALUES), 4)
-        self.add_to_bag(Tile(u"Ф", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Х", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Ц", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"Ш", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Щ", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"Ъ", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Ы", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"Ь", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Э", LETTER_VALUES), 1)
-        self.add_to_bag(Tile(u"Ю", LETTER_VALUES), 2)
-        self.add_to_bag(Tile(u"Я", LETTER_VALUES), 1)
-        shuffle(self.bag)
+        self.add_to_bag(self.tile_class(u"А", self.letter_values), 9)
+        self.add_to_bag(self.tile_class(u"Б", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"В", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Г", self.letter_values), 4)
+        self.add_to_bag(self.tile_class(u"Д", self.letter_values), 12)
+        self.add_to_bag(self.tile_class(u"Е", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Ё", self.letter_values), 3)
+        self.add_to_bag(self.tile_class(u"Ж", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"З", self.letter_values), 9)
+        self.add_to_bag(self.tile_class(u"И", self.letter_values), 9)
+        self.add_to_bag(self.tile_class(u"Й", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"К", self.letter_values), 4)
+        self.add_to_bag(self.tile_class(u"Л", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"М", self.letter_values), 6)
+        self.add_to_bag(self.tile_class(u"Н", self.letter_values), 8)
+        self.add_to_bag(self.tile_class(u"О", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"П", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"Р", self.letter_values), 6)
+        self.add_to_bag(self.tile_class(u"С", self.letter_values), 4)
+        self.add_to_bag(self.tile_class(u"Т", self.letter_values), 6)
+        self.add_to_bag(self.tile_class(u"У", self.letter_values), 4)
+        self.add_to_bag(self.tile_class(u"Ф", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Х", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Ц", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"Ш", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Щ", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"Ъ", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Ы", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"Ь", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Э", self.letter_values), 1)
+        self.add_to_bag(self.tile_class(u"Ю", self.letter_values), 2)
+        self.add_to_bag(self.tile_class(u"Я", self.letter_values), 1)
+        self.shuffle_self()
 
     def take_from_bag(self):
         return self.bag.pop()
