@@ -45,6 +45,7 @@ class SelectLetter(LetterButton):
 		if drag.target():
 			self.used = True
 			self.setStyleSheet("background-color: cyan")
+			self.parent().parent().addIfAllLettersUsed()
 	
 	def reload(self):
 		self.used = False

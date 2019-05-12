@@ -46,6 +46,15 @@ class PlayerFrame(QFrame):
 		else:
 			return False
 
+	def addIfAllLettersUsed(self):
+		allUsed = True
+		for letter in self.letterSelecter.letterList:
+			if not letter.used:
+				allUsed = False
+				break
+		if allUsed:
+			self.turnInfo.addPoints(50)
+
 	def applyPassOnPlayer(self):
 		if not(self.letterSelecter.checkUsed()):
 			self.player.passed += 1
