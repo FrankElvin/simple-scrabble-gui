@@ -7,7 +7,7 @@ from widgets.SelectField import SelectField
 
 class MainWindow(QWidget):
 
-	def __init__(self, playerList, letterBag):
+	def __init__(self, playerList, letterBag, dbChecker):
 		super(MainWindow, self).__init__()
 		self.playerList = playerList
 		self.letterBag = letterBag
@@ -15,7 +15,7 @@ class MainWindow(QWidget):
 	
 		# loading all subwindows
 		self.playerField = PlayerField(self.playerList, self.letterBag)
-		self.gameField = GameField(self.letterBag)
+		self.gameField = GameField(self.letterBag, dbChecker)
 		self.selectField = SelectField(
 			self.playerList,
 			self.letterBag

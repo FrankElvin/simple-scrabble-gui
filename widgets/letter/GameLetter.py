@@ -47,6 +47,7 @@ class GameLetter(LetterButton):
 	def dropEvent(self, e):
 		if not self.filled:
 			self.setText(e.mimeData().text())
+			self.letter = e.mimeData().text()
 			self.setAcceptDrops(False)
 			self.openForWord()
 			self.filled = True
@@ -96,8 +97,12 @@ class GameLetter(LetterButton):
 			word.sort(key = lambda x: x.x)
 
 		print '==== Word ====='
+		word_str = u''
 		for letter in word:
 			print unicode(letter)
+			word_str += letter.letter
+		print unicode(word_str)
+		self.parent().currentWord = word_str
 
 		word[0].getNearbyInDirection(wordDirection)[0].setAcceptDrops(True)
 		word[-1].getNearbyInDirection(wordDirection)[1].setAcceptDrops(True)

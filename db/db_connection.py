@@ -16,7 +16,17 @@ def check_word_in_db(cursor, word):
 	cursor.execute(sql)
 	return cursor.fetchone()
 
+class DbChecker:
 
+	def __init__(self, database):
+		self.conn = create_connection(database)
+		self.cursor = self.conn.cursor()
+	
+	def checkWordInDb(self, word):
+		sql = "SELECT 1 FROM WORDS WHERE WORD = '%s'" %word
+		self.cursor.execute(sql)
+		return self.cursor.fetchone()
+	
 if __name__ == '__main__':
 	conn = create_connection(database)
 	c = conn.cursor()

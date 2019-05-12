@@ -8,6 +8,8 @@ from widgets.StartDialogs import PlayerNumberDialog, PlayerNameDialog
 from impl.Bag import Bag, LETTER_VALUES, Tile
 from impl.Player import Player
 
+from db.db_connection import DbChecker
+
 def showStartDialog():
 	numberDialog = PlayerNumberDialog()
 	numberDialog.exec_()
@@ -30,6 +32,7 @@ def showStartDialog():
 
 if __name__ == '__main__':
 
+	dbChecker = DbChecker('db\word_database.db')
 	app = QApplication(sys.argv)
 	
 	# get the initial data from dialogs
@@ -40,7 +43,7 @@ if __name__ == '__main__':
 		letterBag = Bag(LETTER_VALUES, Tile)
 
 		# Build the window widget
-		mainWindow = MainWindow(playerList, letterBag)
+		mainWindow = MainWindow(playerList, letterBag, dbChecker)
 
 		# Show window and run
 		mainWindow.show()

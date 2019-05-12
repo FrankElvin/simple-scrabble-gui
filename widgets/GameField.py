@@ -2,13 +2,16 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from letter.GameLetter import GameLetter
+from BadWordDialog import BadWordDialog
 
 class GameField(QWidget):
 
-	def __init__(self, letterBag):
+	def __init__(self, letterBag, dbChecker):
 		super(GameField, self).__init__()
 
 		self.letterBag = letterBag
+		self.dbChecker = dbChecker
+		self.currentWord = ""
 		gameLayout = QGridLayout()
 
 		TRIPLE_WORD_SCORE = ((0,0), (7, 0), (14,0), (0, 7), (14, 7), (0, 14), (7, 14), (14,14))
@@ -45,6 +48,7 @@ class GameField(QWidget):
 		return [row[i] for row in self.letterMatrix]
 	
 	def confirmActions(self):
+		self.currentWord = ""
 		for i in self.letterMatrix:
 			for j in i:
 				if j.filled: j.openNearby()
@@ -52,9 +56,19 @@ class GameField(QWidget):
 		for row in self.letterMatrix:
 			# to calculate points later correctly
 			for letter in row: letter.filledNow = False
+	
+	def checkWordInDb(self):
+		if self.currentWord == "": 
+			return True
 
+		if not self.dbChecker.checkWordInDb(self.currentWord):
+			badWordDialog = BadWordDialog(self.currentWord)
+			retval = badWordDialog.exec_()
+
+		return self.dbChecker.checkWordInDb(self.currentWord)
 	
 	def revertActions(self):
+		self.currentWord = ""
 		for row in self.letterMatrix:
 			for letter in row:
 				letter.setAcceptDrops(False)

@@ -81,6 +81,11 @@ class SelectField(QWidget):
 	def nextTurn(self):
 		""" Main logic of the turn ending """
 
+		wordOk = self.parent().gameField.checkWordInDb()
+		if not wordOk:
+			return False
+			
+
 		activeFrame = self.frameList[self.activePlayer]
 		activeFrame.hide()
 
