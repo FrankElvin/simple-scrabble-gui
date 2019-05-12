@@ -44,43 +44,26 @@ class GameField(QWidget):
 	def getMatrixColumn(self, i):
 		return [row[i] for row in self.letterMatrix]
 	
-	def closeWordEndsInRow(self, arrayRow):
-		for i in range(1, len(arrayRow)-1):
-
-			# if start of a word
-			if i<=len(arrayRow)-2:
-				if (
-					arrayRow[i].text()=="" and 
-					arrayRow[i+1].text()!="" and
-					arrayRow[i+2].text()!=""
-				):
-					arrayRow[i].setAcceptDrops(False)
-
-			# if end of a word
-			if (
-				arrayRow[i-1].text() !="" and
-				arrayRow[i].text()   !="" and
-				arrayRow[i+1].text() ==""
-			):
-				arrayRow[i+1].setAcceptDrops(False)
-	
-	
 	def confirmActions(self):
-		# closing word ends for insert
+		for i in self.letterMatrix:
+			for j in i:
+				if j.filled: j.openNearby()
+
 		for row in self.letterMatrix:
-			self.closeWordEndsInRow(row)
 			# to calculate points later correctly
 			for letter in row: letter.filledNow = False
 
-		for j in range(len(self.letterMatrix[0])):
-			column = self.getMatrixColumn(j)
-			self.closeWordEndsInRow(column)
 	
 	def revertActions(self):
 		for row in self.letterMatrix:
 			for letter in row:
+				letter.setAcceptDrops(False)
 				if letter.filledNow:
 					letter.erase()	
 
-	
+		for row in self.letterMatrix:
+			for letter in row:
+				if letter.filled:
+					letter.openNearby()
+
 

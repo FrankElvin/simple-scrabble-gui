@@ -11,7 +11,6 @@ class GameLetter(LetterButton):
 		self.x = x
 		self.y = y
 		self.multiplier = multiplier
-		self.openedBySelf = []
 
 		self.applyColor()
 
@@ -41,12 +40,6 @@ class GameLetter(LetterButton):
 		if (self.x == 7 and self.y == 7):
 			self.setAcceptDrops(True)
 
-		for letter in self.openedBySelf:
-			if not(letter.x == 7 and letter.y == 7):
-				letter.setAcceptDrops(False)
-
-		self.openedBySelf = []
-			
 	def dragEnterEvent(self, e):
 		if e.mimeData().hasFormat('text/plain'): e.accept()
 		else: e.ignore() 
@@ -55,17 +48,71 @@ class GameLetter(LetterButton):
 		if not self.filled:
 			self.setText(e.mimeData().text())
 			self.setAcceptDrops(False)
-			self.openNearby()
+			self.openForWord()
 			self.filled = True
 			self.filledNow = True
 
 			plusPoints = self.getPointsFromLetter()
 			self.parent().parent().selectField.addPointsToCurrent(plusPoints)
 	
-	def getNearbyLetters(self):
-		xs = self.x-1, self.x  , self.x  , self.x+1
-		ys = self.y  , self.y-1, self.y+1, self.y
+	def openForWord(self):
+		if self.x == 7 and self.y == 7:
+			self.openNearby()
+			return True
 
+		hNearby = self.getNearbyInDirection('H')
+		vNearby = self.getNearbyInDirection('V')
+
+		wordDirection = False
+		for letter in hNearby:
+			#if letter.filledNow: 
+			if letter.filled: 
+				wordDirection = 'H'
+				break
+		if not wordDirection: wordDirection = 'V'
+
+		# close everything
+		for i in self.parent().letterMatrix:
+			for j in i:
+				j.setAcceptDrops(False)
+
+		# open just one direction
+		if wordDirection == 'H':
+			for letter in hNearby:
+				if not letter.filled:
+					letter.setAcceptDrops(True)
+		else:
+			for letter in vNearby:
+				if not letter.filled:
+					letter.setAcceptDrops(True)
+
+		row_word, column_word = self.getNearbyWords(mode='Opening')
+		if wordDirection == 'H': word = row_word
+		else: word = column_word
+
+		if wordDirection == 'H':
+			word.sort(key = lambda x: x.y)
+		else:
+			word.sort(key = lambda x: x.x)
+
+		print '==== Word ====='
+		for letter in word:
+			print unicode(letter)
+
+		word[0].getNearbyInDirection(wordDirection)[0].setAcceptDrops(True)
+		word[-1].getNearbyInDirection(wordDirection)[1].setAcceptDrops(True)
+	
+	def getNearbyInDirection(self, direction):
+		if direction == 'H':
+			xs = self.x  , self.x  
+			ys = self.y-1, self.y+1
+			return self.checkBorders(xs, ys)
+		elif direction == 'V':
+			xs = self.x-1, self.x+1
+			ys = self.y  , self.y
+			return self.checkBorders(xs, ys)
+	
+	def checkBorders(self, xs, ys):
 		out_list = []
 		for coord in zip(xs, ys):
 			if (
@@ -73,15 +120,18 @@ class GameLetter(LetterButton):
 				(coord[0]<len(self.parent().letterMatrix) and coord[1]<len(self.parent().letterMatrix))
 			):
 				letter_to_open = self.parent().letterMatrix[coord[0]][coord[1]]
-				if not letter_to_open.filled:
-					out_list.append(letter_to_open)
+				out_list.append(letter_to_open)
 		return out_list
+
+	def getNearbyLetters(self):
+		xs = self.x-1, self.x  , self.x  , self.x+1
+		ys = self.y  , self.y-1, self.y+1, self.y
+		return self.checkBorders(xs, ys)
 	
 	def openNearby(self):
-		self.openedBySelf = self.getNearbyLetters()
-		for letter in self.openedBySelf: letter.setAcceptDrops(True)
+		for letter in self.getNearbyLetters(): letter.setAcceptDrops(True)
 	
-	def getWord(self, row, start):
+	def getWord(self, row, start, mode='Points'):
 		""" Returns list, containing a "word": letter chain nearby to the current letter. This list always starts with a current letter. """
 		left_done = False
 		right_done = False
@@ -92,19 +142,31 @@ class GameLetter(LetterButton):
 				left_done = True
 			else: 
 				left_letter = row[start-i]
-				if left_letter.filledNow:
-					word.append(left_letter) 
-				else:
-					left_done = True
+				if mode == 'Points':
+					if left_letter.filledNow:
+						word.append(left_letter) 
+					else:
+						left_done = True
+				elif mode == 'Opening':
+					if left_letter.filled:
+						word.append(left_letter) 
+					else:
+						left_done = True
 
 			if start+i >= len(row):
 				right_done = True
 			else:
 				right_letter = row[start+i]
-				if right_letter.filledNow: 
-					word.append(right_letter)
-				else:
-					right_done = True
+				if mode == 'Points':
+					if right_letter.filledNow: 
+						word.append(right_letter)
+					else:
+						right_done = True
+				elif mode == 'Opening':
+					if right_letter.filled: 
+						word.append(right_letter)
+					else:
+						right_done = True
 
 			i += 1
 		return word
@@ -140,13 +202,13 @@ class GameLetter(LetterButton):
 
 		return point_delta
 			
-	def getNearbyWords(self):
+	def getNearbyWords(self, mode='Points'):
 		"""Returns the list of words that include given letter."""
 		row = self.parent().letterMatrix[self.x]
-		row_word = self.getWord(row, self.y)
+		row_word = self.getWord(row, self.y, mode)
 
 		column = self.parent().getMatrixColumn(self.y)
-		column_word = self.getWord(column, self.x)
+		column_word = self.getWord(column, self.x, mode)
 
 		return row_word, column_word
 	
