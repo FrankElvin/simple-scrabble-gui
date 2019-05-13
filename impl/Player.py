@@ -7,14 +7,14 @@
         self.score = 0
         self.passed = 0
 	
-	def __str__(self):
-		return "Name:", self.name, ", Score:", self.score
+    def __str__(self):
+        return "Name:", self.name, ", Score:", self.score
 
     def get_name(self):
         return self.name
 
     def increase_score(self, increase):
-		self.score += increase
+        self.score += increase
 
     def get_score(self):
         return self.score

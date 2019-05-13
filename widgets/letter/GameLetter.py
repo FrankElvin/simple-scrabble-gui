@@ -1,4 +1,4 @@
-﻿from LetterButton import LetterButton
+﻿from .LetterButton import LetterButton
 
 class GameLetter(LetterButton):
 
@@ -15,7 +15,7 @@ class GameLetter(LetterButton):
 		self.applyColor()
 
 	def __str__(self):
-		return "Letter %s, points: %d, multiplier: %s" %(unicode(self.text()), self.points, str(self.multiplier))
+		return "Letter %s, points: %d, multiplier: %s" %(self.text(), self.points, str(self.multiplier))
 
 	def applyColor(self):
 		if self.multiplier['type'] == 'letter':
@@ -96,12 +96,9 @@ class GameLetter(LetterButton):
 		else:
 			word.sort(key = lambda x: x.x)
 
-		print '==== Word ====='
 		word_str = u''
 		for letter in word:
-			print unicode(letter)
 			word_str += letter.letter
-		print unicode(word_str)
 		self.parent().currentWord = word_str
 
 		word[0].getNearbyInDirection(wordDirection)[0].setAcceptDrops(True)

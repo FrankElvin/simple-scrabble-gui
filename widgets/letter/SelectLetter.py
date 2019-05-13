@@ -1,4 +1,4 @@
-﻿from LetterButton import LetterButton
+﻿from .LetterButton import LetterButton
 from PyQt4 import QtCore, QtGui
 
 class SelectLetter(LetterButton):
@@ -12,7 +12,7 @@ class SelectLetter(LetterButton):
 
 	def __str__(self):
 		return "Letter %s; used: %s; toChange: %s" %(
-			unicode(self.text()),
+			self.text(),
 			self.used,
 			self.toChange
 		)

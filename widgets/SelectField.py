@@ -1,11 +1,11 @@
 ﻿from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from letter.SelectLetter import SelectLetter
-from selecter.LetterSelecter import LetterSelecter
-from selecter.TurnInfo import TurnInfo
-from selecter.PlayerFrame import PlayerFrame
-from FinishDialog import FinishDialog
+from .letter.SelectLetter import SelectLetter
+from .selecter.LetterSelecter import LetterSelecter
+from .selecter.TurnInfo import TurnInfo
+from .selecter.PlayerFrame import PlayerFrame
+from .FinishDialog import FinishDialog
 
 class SelectField(QWidget):
 
@@ -40,7 +40,6 @@ class SelectField(QWidget):
 			frame.hide()
 
 		self.setLayout(layout)
-		print "Select field initialized"
 	
 	def connectButtons(self):
 		for frame in self.frameList:
@@ -65,7 +64,6 @@ class SelectField(QWidget):
 				break
 
 		if giving_up == True:
-			print "End because of giving up"
 			return True
 
 		# check end of letter bag
@@ -73,7 +71,6 @@ class SelectField(QWidget):
 			self.letterBag.get_remaining_tiles() == 0 and
 			self.frameList[self.activePlayer].checkEmptyHand() == True
 		):
-			print "End because of empty letter bag"
 			return True
 
 		return False

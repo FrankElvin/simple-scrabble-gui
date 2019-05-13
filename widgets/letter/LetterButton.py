@@ -33,8 +33,8 @@ class LetterButton(QPushButton):
 	def setText(self, letter):
 		"""Override the standard setText button method"""
 		super(LetterButton, self).setText(letter)
-		self.points = self.LETTER_VALUES[unicode(letter)]
+		self.points = self.LETTER_VALUES[letter]
 		self.setColorByValue()
 
 	def __str__(self):	
-		return "Letter %s" %unicode(self.text())
+		return "Letter %s" %self.text()

@@ -1,7 +1,7 @@
 ﻿from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from player.PlayerWidget import PlayerWidget
+from .player.PlayerWidget import PlayerWidget
 
 class PlayerField(QWidget):
 
@@ -25,8 +25,6 @@ class PlayerField(QWidget):
 		pfLayout.addWidget(self.tileCounter)
 		self.setLayout(pfLayout)
 
-		print "Player field initialized"
-	
 	def actualizeBag(self):
 		self.tileCounter.setText(
 			str(self.letterBag.get_remaining_tiles())

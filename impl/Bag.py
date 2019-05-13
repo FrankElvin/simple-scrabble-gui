@@ -86,7 +86,7 @@ class Bag:
     def get_remaining_tiles(self):
         return len(self.bag)
 	
-	def take_n_from_bag(self, n):
-		out = []
-		for i in range(n): out.append( self.take_from_bag() )
-		return out
+    def take_n_from_bag(self, n):
+        out = []
+        for i in range(n): out.append( self.take_from_bag() )
+        return out

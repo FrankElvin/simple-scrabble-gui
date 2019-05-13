@@ -1,8 +1,8 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from letter.GameLetter import GameLetter
-from BadWordDialog import BadWordDialog
+from .letter.GameLetter import GameLetter
+from .BadWordDialog import BadWordDialog
 
 class GameField(QWidget):
 
@@ -42,8 +42,6 @@ class GameField(QWidget):
 
 		self.setLayout(gameLayout)
 
-		print "Game field initialized"
-	
 	def getMatrixColumn(self, i):
 		return [row[i] for row in self.letterMatrix]
 	

@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
 	if conn is not None:
 		if check_word_in_db(c, u"АБАЖУР"):
-			print "lol"
+			print("lol")
 		if check_word_in_db(c, u"ЛОЛКЕК"):
-			print "lol"
+			print("lol")
 		conn.close()
 	
