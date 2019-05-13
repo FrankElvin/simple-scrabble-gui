@@ -1,5 +1,5 @@
-﻿from LetterButton import LetterButton
-from PyQt4 import QtCore, QtGui
+﻿from .LetterButton import LetterButton
+from PyQt5 import QtCore, QtWidgets
 
 class SelectLetter(LetterButton):
 
@@ -36,7 +36,7 @@ class SelectLetter(LetterButton):
 		mimeData = QtCore.QMimeData()
 		mimeData.setText(self.text())
 		
-		drag = QtGui.QDrag(self)
+		drag = QtWidgets.QDrag(self)
 		drag.setMimeData(mimeData)
 		
 		dropAction = drag.start(QtCore.Qt.MoveAction)

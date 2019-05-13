@@ -1,4 +1,4 @@
-﻿from LetterButton import LetterButton
+﻿from .LetterButton import LetterButton
 
 class GameLetter(LetterButton):
 
@@ -96,12 +96,12 @@ class GameLetter(LetterButton):
 		else:
 			word.sort(key = lambda x: x.x)
 
-		print '==== Word ====='
+		print('==== Word =====')
 		word_str = u''
 		for letter in word:
-			print unicode(letter)
+			print( unicode(letter) )
 			word_str += letter.letter
-		print unicode(word_str)
+		print(unicode(word_str))
 		self.parent().currentWord = word_str
 
 		word[0].getNearbyInDirection(wordDirection)[0].setAcceptDrops(True)
